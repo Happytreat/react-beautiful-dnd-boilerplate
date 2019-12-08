@@ -26,6 +26,24 @@ const ModuleList = styled.div`
   min-height: 100px;
 `;
 
+/**
+ * To optimize performance without rendering all the modules when we just want to drag modules
+ * - to change background color etc (update snapshot component)
+ * */
+class InnerList extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const { modules } = this.props;
+    return nextProps.modules !== modules;
+  }
+
+  render() {
+    const { modules } = this.props;
+    return modules.map(
+      (mod, index) => <Module key={mod.id} module={mod} index={index} />
+    );
+  }
+}
+
 export default class Semester extends React.Component {
   render() {
     const { semester, modules, index: semIndex } = this.props;
@@ -47,9 +65,7 @@ export default class Semester extends React.Component {
                     ref={provided.innerRef}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    { modules.map(
-                      (mod, index) => <Module key={mod.id} module={mod} index={index} />
-                    )}
+                    <InnerList modules={modules} />
                     {provided.placeholder}
                   </ModuleList>
                 )
@@ -72,4 +88,11 @@ Semester.propTypes = {
     description: PropTypes.string.isRequired,
   })).isRequired,
   index: PropTypes.number.isRequired,
+};
+
+InnerList.propTypes = {
+  modules: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  })).isRequired,
 };

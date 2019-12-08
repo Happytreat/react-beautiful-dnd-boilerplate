@@ -10,6 +10,34 @@ const Container = styled.div`
   display: flex;
 `;
 
+
+/**
+ * To optimize performance without rendering all the modules/semesters when we just want to drag semester
+ * - to change background color etc (update snapshot component)
+ * */
+class InnerSemList extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const { semester, moduleList, index } = this.props;
+    if (
+      nextProps.semester === semester &&
+      nextProps.moduleList === moduleList &&
+      nextProps.index === index
+    ) { return false; }
+    return true;
+  }
+
+  render() {
+    const { semester, moduleList, index } = this.props;
+    const modules = semester.moduleIds.map(modId => moduleList[modId]);
+    return <Semester
+      key={semester.id}
+      semester={semester}
+      modules={modules}
+      index={index}
+    />;
+  }
+}
+
 class App extends React.Component {
   state = stubData;
 
@@ -112,13 +140,11 @@ class App extends React.Component {
                 {
                   this.state.semesterOrder.map((semId, index) => {
                     const sem = this.state.semesters[semId];
-                    const modules = sem.moduleIds.map(modId => this.state.modules[modId]);
-
                     // Use full data struct of sem and mod lists
-                    return <Semester
+                    return <InnerSemList
                       key={semId}
                       semester={sem}
-                      modules={modules}
+                      moduleList={this.state.modules}
                       index={index}
                     />;
                   })}
