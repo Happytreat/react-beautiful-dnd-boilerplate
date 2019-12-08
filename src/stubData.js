@@ -13,9 +13,14 @@ const stubData = {
       title: 'Year 1 Sem 1',
       moduleIds: ['module-1', 'module-2', 'module-3', 'module-4'],
     },
+    'semester-2': {
+      id: 'semester-2',
+      title: 'Year 1 Sem 2',
+      moduleIds: [],
+    },
   },
   // Reordering of semesters
-  semesterOrder: ['semester-1'],
+  semesterOrder: ['semester-1', 'semester-2'],
 };
 
 export default stubData;
