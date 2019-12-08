@@ -11,6 +11,8 @@ const Container = styled.div`
   border-radius: 2px;
   background-color: white;
   width: 220px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.h4`
@@ -20,6 +22,8 @@ const Title = styled.h4`
 const ModuleList = styled.div`
   padding:8px;
   background-color: ${(props) => (props.isDraggingOver ? 'skyblue' : 'inherit')};
+  flex-grow: 1;
+  min-height: 100px;
 `;
 
 export default class Semester extends React.Component {

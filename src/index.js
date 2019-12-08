@@ -43,21 +43,52 @@ class App extends React.Component {
     }
 
     if (type === 'module') {
-      const semester = this.state.semesters[source.droppableId];
-      const newModuleIds = Array.from(semester.moduleIds);
-      newModuleIds.splice(source.index, 1);
-      newModuleIds.splice(destination.index, 0, draggableId);
+      const start = this.state.semesters[source.droppableId];
+      const finish = this.state.semesters[destination.droppableId];
 
-      const newSemester = {
-        ...semester,
-        moduleIds: newModuleIds,
+      if (start === finish) {
+        const newModuleIds = Array.from(start.moduleIds);
+        newModuleIds.splice(source.index, 1);
+        newModuleIds.splice(destination.index, 0, draggableId);
+
+        const newSemester = {
+          ...start,
+          moduleIds: newModuleIds,
+        };
+
+        const newState = {
+          ...this.state,
+          semesters: {
+            ...this.state.semesters,
+            [newSemester.id]: newSemester
+          }
+        };
+
+        this.setState(newState);
+        return;
+      }
+
+      // Moving from one list to another
+      const startModuleIds = Array.from(start.moduleIds);
+      startModuleIds.splice(source.index, 1);
+      const newStart = {
+        ...start,
+        moduleIds: startModuleIds,
+      };
+
+      const finishModuleIds = Array.from(finish.moduleIds);
+      finishModuleIds.splice(destination.index, 0, draggableId);
+      const newFinish = {
+        ...finish,
+        moduleIds: finishModuleIds,
       };
 
       const newState = {
         ...this.state,
         semesters: {
           ...this.state.semesters,
-          [newSemester.id]: newSemester
+          [newStart.id]: newStart,
+          [newFinish.id]: newFinish
         }
       };
 
