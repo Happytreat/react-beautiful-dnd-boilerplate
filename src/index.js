@@ -9,7 +9,37 @@ class App extends React.Component {
   state = stubData;
 
   onDragEnd = result => {
+    const { destination, source, draggableId } = result;
 
+    // destination == null when drop outside of the list
+    if (!destination) return;
+
+    // @index: reordering within column
+    // @droppableId: semester.id
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) return;
+
+    const semester = this.state.semesters[source.droppableId];
+    const newModuleIds = Array.from(semester.moduleIds);
+    newModuleIds.splice(source.index, 1);
+    newModuleIds.splice(destination.index, 0, draggableId);
+
+    const newSemester = {
+      ...semester,
+      moduleIds: newModuleIds,
+    }
+
+    const newState = {
+      ...this.state,
+      semesters: {
+        ...this.state.semesters,
+        [newSemester.id]: newSemester
+      }
+    }
+
+    this.setState(newState);
   };
 
   render() {
