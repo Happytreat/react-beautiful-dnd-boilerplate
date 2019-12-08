@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
-import Module from './Module.jsx';
+import Module from './Module';
 
 const Container = styled.div`
   margin: 9px;
@@ -24,9 +25,19 @@ export default class Semester extends React.Component {
     return (
       <Container>
         <Title>{ semester.title }</Title>
-        <ModuleList>
-          { modules.map((mod) => <Module key={mod.id} module={mod} />) }
-        </ModuleList>
+        <Droppable droppableId={semester.id}>
+          {
+            (provided) => (
+              <ModuleList
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                { modules.map((mod, index) => <Module key={mod.id} module={mod} index={index} />) }
+                {provided.placeholder}
+              </ModuleList>
+            )
+          }
+        </Droppable>
       </Container>
     );
   }
@@ -35,6 +46,7 @@ export default class Semester extends React.Component {
 Semester.propTypes = {
   semester: PropTypes.shape({
     title: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
   modules: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
