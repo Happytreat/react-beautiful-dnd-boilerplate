@@ -11,12 +11,13 @@ const Container = styled.div`
   border-radius: 2px;
 `;
 
-const Title = styled.h3`
+const Title = styled.h4`
   padding: 9px;
 `;
 
 const ModuleList = styled.div`
   padding:8px;
+  background-color: ${(props) => (props.isDraggingOver ? 'skyblue' : 'white')};
 `;
 
 export default class Semester extends React.Component {
@@ -27,10 +28,11 @@ export default class Semester extends React.Component {
         <Title>{ semester.title }</Title>
         <Droppable droppableId={semester.id}>
           {
-            (provided) => (
+            (provided, snapshot) => (
               <ModuleList
                 {...provided.droppableProps}
                 ref={provided.innerRef}
+                isDraggingOver={snapshot.isDraggingOver}
               >
                 { modules.map((mod, index) => <Module key={mod.id} module={mod} index={index} />) }
                 {provided.placeholder}
