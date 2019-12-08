@@ -1,9 +1,11 @@
-### Boilerplate for React Drag & Drop Components
+# Boilerplate for React Drag & Drop Components
 
 Created while working on the UPlan app and saved for future uses. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## References
+[Egg Head Course](https://egghead.io/lessons/react-create-and-style-a-list-of-data-with-react)
 ## Available Scripts
 
 In the project directory, you can run:
